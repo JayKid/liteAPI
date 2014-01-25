@@ -1,9 +1,13 @@
-//File: routes/measures.js
 module.exports = function(app) {
 
   var Measure = require('../models/measure.js');
 
-  //GET - Return all tvshows in the DB
+  function getThresholdDate()
+  {
+    var offset = 300000; // 5 minutes
+    return new Date(new Date().getTime()-offset);
+  }
+
   findAllMeasures = function(req, res) {
     Measure.find(function(err, measures) {
         if(!err) {
@@ -14,10 +18,10 @@ module.exports = function(app) {
     });
   };
 
-  //GET - Return a Measure with specified ID
   findByPsuId = function(req, res) {
-    // Measure.findById(req.param.id, function(err, measure) {
-    Measure.find({ psu: req.params.id }, function(err, measures) {
+    var date_threshold = getThresholdDate();
+
+    Measure.find({ psu: req.params.id, timestamp: {$gt: date_threshold} }, function(err, measures) {
       if(!err) {
         res.send(measures);
       } else {
@@ -26,7 +30,6 @@ module.exports = function(app) {
     });
   };
 
-  //POST - Insert a new Measure in the DB
   addMeasure = function(req, res) {
     console.log('POST');
     console.log(req.body);
@@ -47,7 +50,6 @@ module.exports = function(app) {
     res.send(measure);
   };
 
-  //PUT - Update a register already exists
   updateMeasure = function(req, res) {
     Measure.findById(req.params.id, function(err, measure) {
       measure.psu      = req.body.psu;
@@ -64,7 +66,6 @@ module.exports = function(app) {
     });
   }
 
-  //DELETE - Delete a Measure with specified ID
   deleteMeasure = function(req, res) {
     Measure.findById(req.params.id, function(err, measure) {
       measure.remove(function(err) {

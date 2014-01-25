@@ -15,7 +15,6 @@ app.get('/', function(req, res) {
     res.send("Hello world!");
 });
 
-//Link routes and functions
 app.get('/measures', findAllMeasures);
 app.get('/measure/:id', findByPsuId);
 app.post('/measure', addMeasure);
