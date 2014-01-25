@@ -15,10 +15,11 @@ module.exports = function(app) {
   };
 
   //GET - Return a Measure with specified ID
-  findById = function(req, res) {
-    Measure.findById(req.param.id, function(err, measure) {
+  findByPsuId = function(req, res) {
+    // Measure.findById(req.param.id, function(err, measure) {
+    Measure.find({ psu: req.params.id }, function(err, measures) {
       if(!err) {
-        res.send(measure);
+        res.send(measures);
       } else {
         console.log('ERROR: ' + err);
       }

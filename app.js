@@ -17,7 +17,7 @@ app.get('/', function(req, res) {
 
 //Link routes and functions
 app.get('/measures', findAllMeasures);
-app.get('/measure/:id', findById);
+app.get('/measure/:id', findByPsuId);
 app.post('/measure', addMeasure);
 app.put('/measure/:id', updateMeasure);
 app.delete('/measure/:id', deleteMeasure);
